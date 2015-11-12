@@ -25,6 +25,13 @@ class ForumDetailView(DetailView):
     model = Forum
     template_name = 'forum/forum_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(ForumDetailView, self).get_context_data(**kwargs)
+        question = Forum.objects.get(id=self.kwargs['pk'])
+        answers = Answer.objects.filter(question=question)
+        context['answers'] = answers
+        return context
+
 class ForumUpdateView(UpdateView):
     model = Forum
     template_name = 'forum/forum_form.html'

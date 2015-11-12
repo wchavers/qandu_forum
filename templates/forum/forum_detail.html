@@ -7,5 +7,14 @@
 <p><a href="{% url 'forum_update' pk=forum.id %}">Edit question</a></p>
 <p><a href="{% url 'forum_delete' pk=forum.id %}">Delete question</a></p>
 {% endif %}
+{% if answers.count > 0 %}
+<h3>{{ answers.count }} Answer{{ answers.count|pluralize }}:</h3>
+{% endif %}
+{% for answer in answers %}
+<div class="panel">
+    <p>{{ answer.text }}</p>
+    <p>Answered by {{ answer.user.username }} on {{ answer.created_at }}</p>
+</div>
+{% endfor %}
 <p><a href="{% url 'answer_create' pk=forum.id %}">Write answer</a></p>
 {% endblock %}
