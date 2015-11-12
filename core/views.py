@@ -1,12 +1,12 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView,CreateView,ListView
+from django.views.generic import TemplateView,CreateView,ListView, DetailView
 from django.core.urlresolvers import reverse_lazy
 from .models import *
 
 # Create your views here.
 class Home(TemplateView):
      template_name = 'home.html'
-    
+
 class ForumCreateView(CreateView):
     model = Forum
     template_name = "forum/forum_form.html"
@@ -16,7 +16,11 @@ class ForumCreateView(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(ForumCreateView, self).form_valid(form)
-      
+
 class ForumListView(ListView):
     model = Forum
     template_name = "forum/forum_list.html"
+
+class ForumDetailView(DetailView):
+    model = Forum
+    template_name = 'forum/forum_detail.html'
