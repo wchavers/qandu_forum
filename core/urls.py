@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'^forum/create/$', ForumCreateView.as_view(), name='forum_create'),
     url(r'forum/$', ForumListView.as_view(), name='forum_list'),  
     url(r'^forum/(?P<pk>\d+)/$', ForumDetailView.as_view(), name='forum_detail'),
+    url(r'^forum/update/(?P<pk>\d+)/$', ForumUpdateView.as_view(), name='forum_update'),                   
 )
