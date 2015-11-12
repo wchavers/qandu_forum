@@ -14,3 +14,12 @@ class Forum(models.Model):
 
   def get_absolute_url(self):
     return reverse("forum_detail", args=[self.id])
+
+class Answer(models.Model):
+    question = models.ForeignKey(Forum)
+    user = models.ForeignKey(User)
+    created_at = models.DateTimeField(auto_now_add=True)
+    text = models.TextField()
+
+    def __unicode__(self):
+        return self.text

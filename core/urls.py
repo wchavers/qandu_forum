@@ -9,5 +9,6 @@ urlpatterns = patterns('',
     url(r'forum/$', ForumListView.as_view(), name='forum_list'),
     url(r'^forum/(?P<pk>\d+)/$', ForumDetailView.as_view(), name='forum_detail'),
     url(r'^forum/update/(?P<pk>\d+)/$', ForumUpdateView.as_view(), name='forum_update'),
-    url(r'^forum/delete/(?P<pk>\d+)/$', ForumDeleteView.as_view(), name='forum_delete'),        
+    url(r'^forum/delete/(?P<pk>\d+)/$', ForumDeleteView.as_view(), name='forum_delete'),
+    url(r'^forum/(?P<pk>\d+)/answer/create/$', AnswerCreateView.as_view(), name='answer_create'),
 )

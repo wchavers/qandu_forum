@@ -3,8 +3,9 @@
 <h1>{{ forum.title }}</h1>
 <p>{{ forum.description }}</p>
 <p>Asked by {{ forum.user.username }} on {{ forum.created_at }}</p>
-{% if question.user == user %}
-<p><a href="{% url 'forum_update' pk=queston.id %}">Edit question</a></p>
-<p><a href="{% url 'forum_delete' pk=question.id %}">Delete question</a></p>
+{% if forum.user == user %}
+<p><a href="{% url 'forum_update' pk=forum.id %}">Edit question</a></p>
+<p><a href="{% url 'forum_delete' pk=forum.id %}">Delete question</a></p>
 {% endif %}
+<p><a href="{% url 'answer_create' pk=forum.id %}">Write answer</a></p>
 {% endblock %}
