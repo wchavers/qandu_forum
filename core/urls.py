@@ -5,5 +5,6 @@ urlpatterns = patterns('',
     url(r'^$', Home.as_view(), name='home'),
     url(r'^user/', include('registration.backends.simple.urls')),
     url(r'^user/', include('django.contrib.auth.urls')),  
-    url(r'^forum/create/$', ForumCreateView.as_view(), name='forum_create'),                  
+    url(r'^forum/create/$', ForumCreateView.as_view(), name='forum_create'),
+    url(r'forum/$', ForumListView.as_view(), name='forum_list'),                    
 )
