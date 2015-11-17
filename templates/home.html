@@ -4,8 +4,10 @@
 <div class="intro-header">
   <div class="container">
     <div class="intro-message">
-    <h1>Welcome Back!</h1>
-    <h3>Check the forum for a response to your questions</h3>
+      <h1>Welcome Back!</h1>
+      <h3>Check the forum for a response to your questions</h3>
+    </div>
+  </div>
 </div>
 {% else %}
 <div class="intro-header">
@@ -14,6 +16,8 @@
       <h1>Start or Sit'em</h1>
       <h3>The Best Fantasy Football Forum</h3>
       <p><a class="btn btn-lg btn-primary" href="{% url 'registration_register' %}">Sign up</a></p>
+    </div>
+  </div>
 </div>
 {% endif %}
 {% endblock %}
