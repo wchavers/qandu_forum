@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView,CreateView,ListView,DetailView,UpdateView,DeleteView
 from django.core.urlresolvers import reverse_lazy
+from django.core.exceptions import PermissionDenied
 from .models import *
 
 # Create your views here.
@@ -37,10 +38,22 @@ class ForumUpdateView(UpdateView):
     template_name = 'forum/forum_form.html'
     fields = ['title', 'description']
 
+    def get_object(self, *args, **kwargs):
+        object = super(ForumUpdateView, self).get_object(*args, **kwargs)
+        if object.user != self.request.user:
+            raise PermissionDenied()
+        return object
+
 class ForumDeleteView(DeleteView):
     model = Forum
     template_name = 'forum/forum_confirm_delete.html'
     success_url = reverse_lazy('forum_list')
+
+    def get_object(self, *args, **kwargs):
+        object = super(ForumDeleteView, self).get_object(*args, **kwargs)
+        if object.user != self.request.user:
+            raise PermissionDenied()
+        return object
 
 class AnswerCreateView(CreateView):
     model = Answer
@@ -63,6 +76,12 @@ class AnswerUpdateView(UpdateView):
 
     def get_success_url(self):
         return self.object.question.get_absolute_url()
+      
+    def get_object(self, *args, **kwargs):
+        object = super(AnswerUpdateView, self).get_object(*args, **kwargs)
+        if object.user != self.request.user:
+            raise PermissionDenied()
+        return object  
 
 class AnswerDeleteView(DeleteView):
     model = Answer
@@ -71,3 +90,9 @@ class AnswerDeleteView(DeleteView):
 
     def get_success_url(self):
         return self.object.question.get_absolute_url()
+      
+    def get_object(self, *args, **kwargs):
+        object = super(AnswerDeleteView, self).get_object(*args, **kwargs)
+        if object.user != self.request.user:
+            raise PermissionDenied()
+        return object  
