@@ -14,11 +14,13 @@
 <div class="panel">
     <p>{{ answer.text }}</p>
     {% if answer.user == user %}
-    <p><a href="{% url 'answer_update' forum_pk=forum.id answer_pk=answer.id %}">Edit answer</a></p>
-    <p><a href="{% url 'answer_delete' forum_pk=forum.id answer_pk=answer.id %}">Delete answer</a></p>
+    <p><a href="{% url 'answer_update' forum_pk=forum.id answer_pk=answer.id %}">Edit comment</a></p>
+    <p><a href="{% url 'answer_delete' forum_pk=forum.id answer_pk=answer.id %}">Delete comment</a></p>
     {% endif %}
     <p>Answered by {{ answer.user.username }} on {{ answer.created_at }}</p>
 </div>
 {% endfor %}
-<p><a href="{% url 'answer_create' pk=forum.id %}">Write answer</a></p>
+{% if not user_answers %}
+<p><a href="{% url 'answer_create' pk=forum.id %}">Write comment</a></p>
+{% endif %}
 {% endblock %}
