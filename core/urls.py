@@ -11,5 +11,6 @@ urlpatterns = patterns('',
     url(r'^forum/update/(?P<pk>\d+)/$', ForumUpdateView.as_view(), name='forum_update'),
     url(r'^forum/delete/(?P<pk>\d+)/$', ForumDeleteView.as_view(), name='forum_delete'),
     url(r'^forum/(?P<pk>\d+)/answer/create/$', AnswerCreateView.as_view(), name='answer_create'),
-    url(r'^forum/(?P<forum_pk>\d+)/answer/update/(?P<answer_pk>\d+)/$', AnswerUpdateView.as_view(), name='answer_update'),   
+    url(r'^forum/(?P<forum_pk>\d+)/answer/update/(?P<answer_pk>\d+)/$', AnswerUpdateView.as_view(), name='answer_update'),
+    url(r'^forum/(?P<forum_pk>\d+)/answer/delete/(?P<answer_pk>\d+)/$', AnswerDeleteView.as_view(), name='answer_delete'),                   
 )
