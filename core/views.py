@@ -9,51 +9,51 @@ from .forms import *
 class Home(TemplateView):
      template_name = 'home.html'
 
-class ForumCreateView(CreateView):
-    model = Forum
-    template_name = "forum/forum_form.html"
+class QuestionCreateView(CreateView):
+    model = Question
+    template_name = "question/question_form.html"
     fields = ['title', 'description']
-    success_url = reverse_lazy('forum_list')
+    success_url = reverse_lazy('question_list')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        return super(ForumCreateView, self).form_valid(form)
+        return super(QuestionCreateView, self).form_valid(form)
 
-class ForumListView(ListView):
-    model = Forum
-    template_name = "forum/forum_list.html"
+class QuestionListView(ListView):
+    model = Question
+    template_name = "question/question_list.html"
 
-class ForumDetailView(DetailView):
-    model = Forum
-    template_name = 'forum/forum_detail.html'
+class QuestionDetailView(DetailView):
+    model = Question
+    template_name = 'question/question_detail.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ForumDetailView, self).get_context_data(**kwargs)
-        question = Forum.objects.get(id=self.kwargs['pk'])
+        context = super(QuestionDetailView, self).get_context_data(**kwargs)
+        question = Question.objects.get(id=self.kwargs['pk'])
         answers = Answer.objects.filter(question=question)
         context['answers'] = answers
         user_answers = Answer.objects.filter(question=question, user=self.request.user)
         context['user_answers'] = user_answers
         return context
 
-class ForumUpdateView(UpdateView):
-    model = Forum
-    template_name = 'forum/forum_form.html'
+class QuestionUpdateView(UpdateView):
+    model = Question
+    template_name = 'question/question_form.html'
     fields = ['title', 'description']
 
     def get_object(self, *args, **kwargs):
-        object = super(ForumUpdateView, self).get_object(*args, **kwargs)
+        object = super(QuestionUpdateView, self).get_object(*args, **kwargs)
         if object.user != self.request.user:
             raise PermissionDenied()
         return object
 
-class ForumDeleteView(DeleteView):
-    model = Forum
-    template_name = 'forum/forum_confirm_delete.html'
-    success_url = reverse_lazy('forum_list')
+class QuestionDeleteView(DeleteView):
+    model = Question
+    template_name = 'question/question_confirm_delete.html'
+    success_url = reverse_lazy('question_list')
 
     def get_object(self, *args, **kwargs):
-        object = super(ForumDeleteView, self).get_object(*args, **kwargs)
+        object = super(QuestionDeleteView, self).get_object(*args, **kwargs)
         if object.user != self.request.user:
             raise PermissionDenied()
         return object
@@ -67,11 +67,11 @@ class AnswerCreateView(CreateView):
         return self.object.question.get_absolute_url()
 
     def form_valid(self, form):
-      question = Forum.objects.get(id=self.kwargs['pk'])
+      form.instance.user = self.request.user
+      form.instance.question = Question.objects.get(id=self.kwargs['pk'])
+      question = Question.objects.get(id=self.kwargs['pk'])
       if Answer.objects.filter(question=question, user=self.request.user).exists():
           raise PermissionDenied()
-      form.instance.user = self.request.user
-      form.instance.question = Forum.objects.get(id=self.kwargs['pk'])
       return super(AnswerCreateView, self).form_valid(form)
 
 class AnswerUpdateView(UpdateView):
@@ -105,14 +105,24 @@ class AnswerDeleteView(DeleteView):
 
 class VoteFormView(FormView):
     form_class = VoteForm
-    
+
     def form_valid(self, form):
-        user = self.request.user
-        forum = Forum.objects.get(pk=form.data["forum"])
+      user = self.request.user
+      question = Question.objects.get(pk=form.data["question"])
+      try:
+          answer = Answer.objects.get(pk=form.data["answer"])
+          prev_votes = Vote.objects.filter(user=user, answer=answer)
+          has_voted = (prev_votes.count()>0)
+          if not has_voted:
+            Vote.objects.create(user=user, answer=answer)
+          else:
+            prev_votes[0].delete()
+          return redirect(reverse('question_detail', args=[form.data["question"]]))
+      except:
         prev_votes = Vote.objects.filter(user=user, question=question)
-        has_voted = (prev_votes.count()>0)  
+        has_voted = (prev_votes.count()>0)
         if not has_voted:
             Vote.objects.create(user=user, question=question)
         else:
             prev_votes[0].delete()
-        return redirect('forum_list')
+        return redirect('question_list')

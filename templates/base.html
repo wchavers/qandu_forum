@@ -50,8 +50,8 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
-                      <li><a href="{% url 'forum_list' %}">Forum</a></li>
-                      <li><a href="{% url 'forum_create' %}">Ask Question</a></li>
+                      <li><a href="{% url 'question_list' %}">Forum</a></li>
+                      <li><a href="{% url 'question_create' %}">Ask Question</a></li>
                       <li><a href="{% url 'auth_logout' %}">Logout</a></li>
                       {% else %}
                       <li><a href="{% url 'auth_login' %}">Login</a></li>
