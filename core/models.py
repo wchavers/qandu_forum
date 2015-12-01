@@ -2,8 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
+LEAGUE_CHOICES = (
+(0, 'Standard'),
+(1, '.5 PPR'),
+(2, ' PPR'),
+)
 # Create your models here.
 class Question(models.Model):
+  league = models.IntegerField(choices=LEAGUE_CHOICES, default=0)
   title = models.CharField(max_length=300)
   description = models.TextField(null=True, blank=True)
   created_at = models.DateTimeField(auto_now_add=True)
