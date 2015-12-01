@@ -22,6 +22,7 @@ class QuestionCreateView(CreateView):
 class QuestionListView(ListView):
     model = Question
     template_name = "question/question_list.html"
+    paginate_by = 4
 
 class QuestionDetailView(DetailView):
     model = Question
@@ -176,7 +177,7 @@ class UserDeleteView(DeleteView):
         user.is_active = False
         user.save()
         return redirect(self.get_success_url())
-      
+
 class SearchQuestionListView(QuestionListView):
     def get_queryset(self):
         incoming_query_string = self.request.GET.get('query','')
