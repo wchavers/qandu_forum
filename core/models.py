@@ -33,6 +33,7 @@ class Answer(models.Model):
 class Vote(models.Model):
     user = models.ForeignKey(User)
     question = models.ForeignKey(Question)
+    answer = models.ForeignKey(Answer)
 
     def __unicode__(self):
         return "%s upvoted" % (self.user.username)
